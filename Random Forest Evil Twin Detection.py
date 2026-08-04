@@ -4,6 +4,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.metrics import ConfusionMatrixDisplay
+import joblib
 
 
 # load data ;
@@ -110,3 +112,22 @@ print(importance)
 
 # ploting the results of the feature importance
 
+importance.plot(
+    x="Feature",
+    y="Importance",
+    kind="bar",
+    legend=False
+
+)
+plt.title("Feature Importance")
+plt.xlabel("Feature")
+plt.ylabel("Importance")
+plt.show()
+
+# Display the confusion matrix
+ConfusionMatrixDisplay.from_estimator(rf, x_test, y_test)
+plt.show()
+
+
+# save model
+joblib.dump(rf,"evil_twin_random_forest.pkl")
