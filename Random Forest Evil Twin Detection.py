@@ -44,8 +44,11 @@ plt.show()
 
 
 print(data["Channel"].value_counts())
+print(data["SSID"].value_counts())
+print(data["Vendor_OUI"].value_counts())
+print(data["Security_Type"].value_counts())
 
 # Feature Engineering 
-#x = data[["SSID", "RSSI", "Channel", "Security_Type"]]
+#x = data[["SSID", "RSSI", "Channel", "Security_Type", "Beacon_Interval_ms", "Duplicate_SSID_Count_30min"]]
 #y = data["Label"]
-print(data.columns)
+
