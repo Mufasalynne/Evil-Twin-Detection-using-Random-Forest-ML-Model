@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # load data ;
 data_path = "Evil_Twin_Example_Dataset.xlsx"
@@ -21,19 +22,30 @@ data = data.drop_duplicates()
 print(data)
 
 #HANDLING MISSING VALUES
-data = data.isnull().sum()
-print(data)
+missing_data = data.isnull().sum()
+missing_data = missing_data[missing_data > 0]
+print(missing_data)
 
 # drop the missing Values 
-data = data.dropna()
-print(data)
+drop_missing = data.dropna()
+print(drop_missing)
 
 # remove unconfired from verification_method column
 
-if "Verification_Method" in data.columns:
-    before = len(data)
-    df = df[~df["Verification_Method"].str.contains("Unconfirmed", case=False, na=False)]
-    df = df.reset_index(drop=True)
-    removed = before - len(df)
-if removed:
-    print(f"Removed {removed} row(s) with unconfirmed labels (untrustworthy ground truth).")
+#Exploratory Data Analysis (EDA)
+print(data["Label"].value_counts())
+
+print(data["RSSI"].describe())
+
+plt.hist(data["RSSI"], bins=20)
+plt.xlabel("RSSI")
+plt.ylabel("frequency")
+plt.show()
+
+
+print(data["Channel"].value_counts())
+
+# Feature Engineering 
+#x = data[["SSID", "RSSI", "Channel", "Security_Type"]]
+#y = data["Label"]
+print(data.columns)
