@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
 
 # load data ;
 data_path = "Evil_Twin_Example_Dataset.xlsx"
@@ -44,11 +45,25 @@ plt.show()
 
 
 print(data["Channel"].value_counts())
-print(data["SSID"].value_counts())
-print(data["Vendor_OUI"].value_counts())
-print(data["Security_Type"].value_counts())
+#print(data["SSID"].value_counts())
+#print(data["Vendor_OUI"].value_counts())
+#print(data["Security_Type"].value_counts())
 
 # Feature Engineering 
-#x = data[["SSID", "RSSI", "Channel", "Security_Type", "Beacon_Interval_ms", "Duplicate_SSID_Count_30min"]]
-#y = data["Label"]
+x = data[["SSID", "RSSI", "Channel", "Security_Type","Vendor_OUI","Beacon_Interval_ms", "Duplicate_SSID_Count_30min"]]
+y = data["Label"]
+
+# feature encoding for categorical features
+x = pd.get_dummies(x, columns=["SSID", "Vendor_OUI", "Security_Type"], drop_first= True)
+
+# encode the label_data
+label_encoder = LabelEncoder()
+y = label_encoder.fit_transform(y)
+
+print(x.info())
+print(x.head(10))
+
+print(y[:10])
+
+# Spliting the dataset into the training and the testing dataset
 
