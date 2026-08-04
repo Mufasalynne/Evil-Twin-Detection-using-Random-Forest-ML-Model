@@ -1,6 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
 
 # load data ;
 data_path = "Evil_Twin_Example_Dataset.xlsx"
@@ -66,4 +70,43 @@ print(x.head(10))
 print(y[:10])
 
 # Spliting the dataset into the training and the testing dataset
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=42, stratify=y)
+
+# train the model using random forest classifier
+rf = RandomForestClassifier(
+    n_estimators=500,
+    random_state=42
+)
+
+rf.fit(x_train, y_train)
+
+# predicting the test dataset
+y_pred = rf.predict(x_test)
+
+# Evaluating the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy:{accuracy:.2f}")
+
+# confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+#classification report
+class_report = classification_report(y_test, y_pred)
+print(class_report)
+
+# Feature Importance
+importance = pd.DataFrame({
+    "Feature": x.columns,
+    "Importance": rf.feature_importances_
+})
+
+importance = importance.sort_values(
+    by = "Importance",
+    ascending = False
+)
+
+print(importance)
+
+# ploting the results of the feature importance
 
